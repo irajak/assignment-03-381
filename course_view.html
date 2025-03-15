@@ -14,107 +14,78 @@
     <div>
         <nav>
             <a href="index.html">Homepage</a>
+            <a href="course_view.html">Courses</a>
         </nav>
     </div>
-    
     <main class="courseview">
-        <label for="term">Select Term:</label>
-        <select id="term" name="term">
-            <option value="Winter 2025">Winter 2025</option>
-            <option value="Winter 2024">Winter 2024</option>
-            <option value="Fall 2025">Fall 2025</option>
-            <option value="Fall 2024">Fall 2024</option>
-        </select>
-        
-        <section class="Enrolled">
-			<!-- Courses in which the student is enrolled -->
-            <!-- Display Course 1, 2, and 3 in the same line -->
-            <h2>Enrolled Courses</h2>
-            <hr>
-            <table class="cv">
-				<tr>
-					<td>
-						<div>
-                            <img src="course1.jpg" alt="Course 1">
-                            <p>Course Name: Web Development</p>
-                            <p>Course Code: WD381</p>
-                            <a href="attempt_quiz.html">Attempt Quiz</a>
-                        </div>
-					</td>
-					<td>
-						<div>
-                            <img src="course1.jpg" alt="Course 1">
-                            <p>Course Name: Data Structures</p>
-                            <p>Course Code: DS371</p>
-                            <a href="attempt_quiz.html">Attempt Quiz</a>
-                        </div>
-					</td>
-                    <td>
-						<div>
-                            <img src="course1.jpg" alt="Course 1">
-                            <p>Course Name: Database Systems</p>
-                            <p>Course Code: DB346</p>
-                            <a href="attempt_quiz.html">Attempt Quiz</a>
-                        </div>
-					</td>
-				</tr>
-				<!-- Display Course 4 and 5 in the same line -->
-				<tr>
-					<td>
-						<div>
-                            <img src="course1.jpg" alt="Course 1">
-                            <p>Course Name: Software Testing</p>
-                            <p>Course Code: ST484</p>
-                            <a href="attempt_quiz.html">Attempt Quiz</a>
-                        </div>
-					</td>
-					<td>
-						<div>
-                            <img src="course1.jpg" alt="Course 1">
-                            <p>Course Name: Software Architectures</p>
-                            <p>Course Code: SA396</p>
-                            <a href="attempt_quiz.html">Attempt Quiz</a>
-                        </div>
-					</td>
-				</tr>
-            </table> 
+        <section id="pending-courses">
+            <h2>Pending Course Invitations</h2>
+            <div class="courses-container">
+                <div class="course-tile" data-course-id="1">
+                    <h3>Introduction to Web Development</h3>
+                    <p>Instructor: Dr. Smith</p>
+                    <button class="accept-btn" data-course-id="1">Accept</button>
+                    <button class="decline-btn" data-course-id="1">Decline</button>
+                </div>
+                <div class="course-tile" data-course-id="2">
+                    <h3>Data Structures and Algorithms</h3>
+                    <p>Instructor: Dr. Jones</p>
+                    <button class="accept-btn" data-course-id="2">Accept</button>
+                    <button class="decline-btn" data-course-id="2">Decline</button>
+                </div>
+                <!-- more pending courses will be added here dynamically by javaScript -->
+            </div>
         </section>
-        
-        <div>
-        </div>
-        <br>
-        <br>
-        <section class="Pending">
-			<!-- Courses in which the student is enrolled -->
-            <!-- Display Course 1, 2, and 3 in the same line -->
-            <h2>Pending Invitations</h2>
-            <hr>
-            <table class="cv">
-				<tr>
-					<td>
-                        <div>
-                            <img src="course2.jpg" alt="Course 2">
-                            <p>Course Name: Data Science</p>
-                            <p>Course Code: DS102</p>
-                            <button class="accept">Accept</button>
-                            <button class="decline">Decline</button>
-                        </div>
-                    </td> 
-                    <td>
-                        <div>
-                            <img src="course2.jpg" alt="Course 2">
-                            <p>Course Name: Machine Learning</p>
-                            <p>Course Code: ML105</p>
-                            <button class="accept">Accept</button>
-                            <button class="decline">Decline</button>
-                        </div>
-                    </td> 
-                </tr>
-            </table>
+
+        <section id="enrolled-courses">
+            <h2>Enrolled Courses</h2>
+            <div class="courses-container">
+                <div class="course-tile">
+                    <h3>Full Stack Web Development</h3>
+                    <p>Instructor: Dr. Deb</p>
+                    <button class="view-details-btn" data-course-id="3">View Details</button>
+                </div>
+                <!-- more enrolled courses will be added here dynamically by javaScript -->
+            </div>
         </section>
     </main>
-    <footer>
-        <p>&copy; 2025 LMS. All rights reserved.</p>
-    </footer>
+    <footer><p>&copy; 2025 LMS. All rights reserved.</p></footer>
+    <script>
+        // javaScript for dynamic enrollment and hover effects
+        const courseTiles = document.querySelectorAll('.course-tile');
+        courseTiles.forEach(tile => {
+            tile.addEventListener('mouseover', () => {
+                tile.style.backgroundColor = '#ffffff'; // highlight colour
+            });
+            tile.addEventListener('mouseout', () => {
+                tile.style.backgroundColor = '#e6f2ff'; // restore original background colour
+            });
+        });
+
+        const acceptButtons = document.querySelectorAll('.accept-btn');
+        acceptButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const courseId = this.dataset.courseId;
+                const courseTile = this.parentNode;
+                document.getElementById('enrolled-courses').querySelector('.courses-container').appendChild(courseTile);
+                this.remove(); // remove accept button
+                courseTile.querySelector('.decline-btn').remove(); // remove decline button
+                // "View Details" button
+                const viewDetailsButton = document.createElement('button');
+                viewDetailsButton.classList.add('view-details-btn');
+                viewDetailsButton.dataset.courseId = courseId;
+                viewDetailsButton.textContent = 'View Details';
+                courseTile.appendChild(viewDetailsButton);
+            });
+        });
+
+        const declineButtons = document.querySelectorAll('.decline-btn');
+        declineButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const courseTile = this.parentNode;
+                courseTile.remove();
+            });
+        });
+    </script>
 </body>
 </html>

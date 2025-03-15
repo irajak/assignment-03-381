@@ -14,48 +14,104 @@
     <div>
         <nav>
             <a href="index.html">Homepage</a>
-            <a href="course_view.html">Courses</a> 
+            <a href="course_view.html">Courses</a>
         </nav>
     </div>
     <main class="attemptquiz">
-        <img src="banner.jpg" alt="Quiz Banner" style="width: 100%;">
         <div class="quizdetails">
-            <h2>Course Name: Web Development</h2>
-            <h2>Course Code: WD381</h2>
-            <p>Topic: HTML Basics</p>
-            <p>Deadline: 11:59 PM, February 10, 2025</p>
-            <p>Attempts Allowed: 1</p>
+            <h2>Quiz: Introduction to Web Development</h2>
+            <div id="timer">10:00</div> <!-- timer display element -->
+            <p>Instructions: Please answer all questions within the time limit.</p>
         </div>
-        
-        <h3>Question 1</h3>
-        <p>What does HTML stand for?</p>
-        <div class="Qs">
-            <input type="radio" id="q1a" name="q1" value="Hyper Text Markup Language">
-            <label for="q1a">Hyper Text Markup Language</label><br>
-            <input type="radio" id="q1b" name="q1" value="Home Tool Markup Language">
-            <label for="q1b">Home Tool Markup Language</label><br>
+
+        <form id="quiz-form">
+            <div class="Qs" id="question1">
+                <h3>Question 1: What does HTML stand for?</h3>
+                <label><input type="radio" name="q1" value="Hyper Text Markup Language">Hyper Text Markup Language</label>
+                <label><input type="radio" name="q1" value="Highly Technical Modern Language">Highly Technical Modern Language</label>
+                <label><input type="radio" name="q1" value="Hyperlink and Text Management Language">Hyperlink and Text Management Language</label>
+            </div>
+
+            <div class="Qs" id="question2">
+                <h3>Question 2: Which of the following are fundamental technologies for frontend development?</h3>
+                <label><input type="checkbox" name="q2" value="HTML">HTML</label>
+                <label><input type="checkbox" name="q2" value="CSS">CSS</label>
+                <label><input type="checkbox" name="q2" value="JavaScript">JavaScript</label>
+                <label><input type="checkbox" name="q2" value="Python">Python</label>
+            </div>
+
+            <button type="button" class="FinQz" onclick="submitQuiz()">Finish Quiz</button>
+        </form>
+
+        <div id="score-display" style="display:none; margin-top: 20px; font-size: 1.2em; font-weight: bold;">
+            Your Final Score: <span id="final-score"></span> / 100
         </div>
-        <br>
-        <button class="ans">Submit Answer</button>
-        
-        <h3>Question 2</h3>
-        <p>Which of the following are HTML elements? (Select all that apply)</p>
-        <div class="Qs">
-        <input type="checkbox" id="q2a" name="q2" value="<div>">
-        <label for="q2a">&lt;div&gt;</label><br>
-        <input type="checkbox" id="q2b" name="q2" value="<span>">
-        <label for="q2b">&lt;span&gt;</label><br>
-        </div>
-        <br>
-        <button class="ans">Submit Answer</button>
-        
-        <br><br>
-        <a href="leaderboard.html">
-            <button class="FinQz">Finish Quiz</button>
-        </a>
     </main>
-    <footer>
-        <p>&copy; 2025 LMS. All rights reserved.</p>
-    </footer>
+    <footer><p>&copy; 2025 LMS. All rights reserved.</p></footer>
+    <script>
+        // javaScript for quiz timer, answer validation, and score calculation
+        const timerDisplay = document.getElementById('timer');
+        let timeLeft = 600; // 10 minutes in seconds
+        let timerInterval;
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                // redirect to leaderboard.html when time expires
+                window.location.href = 'leaderboard.html';
+            }
+            timeLeft--;
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        startTimer(); // start the timer when the page loads
+
+        function submitQuiz() {
+            const form = document.getElementById('quiz-form');
+            const q1Answer = form.querySelector('input[name="q1"]:checked');
+            const q2Answers = form.querySelectorAll('input[name="q2"]:checked');
+            let score = 0;
+            let incomplete = false;
+
+            if (!q1Answer) {
+                incomplete = true;
+            }
+
+            if (q2Answers.length === 0) {
+                incomplete = true;
+            }
+
+            if (incomplete) {
+                alert('Please answer all questions before submitting.'); // show alert for incomplete answers
+                return;
+            }
+
+            // score calculation
+            if (q1Answer.value === "Hyper Text Markup Language") {
+                score += 50;
+            }
+
+            let q2CorrectAnswers = 0;
+            q2Answers.forEach(answer => {
+                if (answer.value === "HTML" || answer.value === "CSS") {
+                    q2CorrectAnswers++;
+                }
+            });
+
+            if (q2CorrectAnswers > 0) {
+                score += q2CorrectAnswers * 25;
+            }
+
+            document.getElementById('final-score').textContent = score;
+            document.getElementById('score-display').style.display = 'block';
+            form.style.display = 'none'; // hide the form after submission
+        }
+    </script>
 </body>
 </html>

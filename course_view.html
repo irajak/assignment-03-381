@@ -33,7 +33,6 @@
                     <button class="accept-btn" data-course-id="2">Accept</button>
                     <button class="decline-btn" data-course-id="2">Decline</button>
                 </div>
-                <!-- more pending courses will be added here dynamically by javaScript -->
             </div>
         </section>
 
@@ -45,13 +44,11 @@
                     <p>Instructor: Dr. Deb</p>
                     <button class="view-details-btn" data-course-id="3">View Details</button>
                 </div>
-                <!-- more enrolled courses will be added here dynamically by javaScript -->
             </div>
         </section>
     </main>
     <footer><p>&copy; 2025 LMS. All rights reserved.</p></footer>
     <script>
-        // javaScript for dynamic enrollment and hover effects
         const courseTiles = document.querySelectorAll('.course-tile');
         courseTiles.forEach(tile => {
             tile.addEventListener('mouseover', () => {

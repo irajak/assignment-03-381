@@ -20,12 +20,12 @@
         .form-group {
             width: 100%;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;  /* Consistent spacing */
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;  /* Consistent spacing between label and input */
             color: #333;
         }
 
@@ -40,6 +40,7 @@
             background-color: #4CAF50;
             opacity: 0.5;
             padding: 5px 15px;
+            margin-top: 5px;  /* Added spacing above button */
         }
 
         .signup-btn:hover {
@@ -56,18 +57,21 @@
 </head>
 <body>
     <header>
-        <img src="lms-logo.png" alt="LMS Logo">
-        <h1>LMS - Learning Management System</h1>
+        <img src="logo.jpg" alt="LMS Logo" style="width: 100px; height: 100px;">
+        <h1>LMS - Learning Management System</h1>        
     </header>
     
     <nav>
-        <a href="homepage.html">Homepage</a>
+        <a href="index.html">Home</a>
+        <a href="login.html">Login</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="course_view.html">Courses</a>
     </nav>
 
     <main class="signup">
         <h2>Sign Up</h2>
         <div class="signup-container">
-            <form id="signup-form" onsubmit="return validateForm(event)">
+            <form id="signup-form">
                 <div class="form-group">
                     <label>Username:</label>
                     <input type="text" id="username" name="username" required>
@@ -92,10 +96,6 @@
             <div id="error-messages"></div>
             <div id="success-message" style="display: none;">Signup successful! Redirecting to login...</div>
         </div>
-
-        <div class="login-link">
-            <a href="index.html">Already have an account? Login here</a>
-        </div>
     </main>
 
     <footer>
@@ -103,59 +103,65 @@
     </footer>
 
     <script>
-        function validateForm(event) {
+        // Get form element
+        const form = document.getElementById('signup-form');
+        
+        // Add submit event listener to form
+        form.addEventListener('submit', function(event) {
+            // Prevent the default form submission
             event.preventDefault();
-            const errorMessages = [];
+            
             const username = document.getElementById('username').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
+            
+            const errorMessages = [];
+            const errorDiv = document.getElementById('error-messages');
+            const successDiv = document.getElementById('success-message');
+            
+            // Clear previous messages
+            errorDiv.innerHTML = '';
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
 
-            // username validation
+            // Username validation
             const usernameRegex = /^[A-Za-z][A-Za-z0-9_-]{2,19}$/;
             if (!usernameRegex.test(username)) {
-                errorMessages.push("Invalid username (Reason:...)");
+                errorMessages.push("Invalid username (Reason: must start with a letter and contain only letters, numbers, hyphens, or underscores)");
             }
 
-            // email validation
+            // Email validation
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
-                errorMessages.push("Invalid email (Reason:...)");
+                errorMessages.push("Invalid email (Reason: must be a valid email format)");
             }
 
             // Password validation
             const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+\[\]{}|;:'",.<>?/`~])[A-Za-z\d!@#$%^&*()\-_=+\[\]{}|;:'",.<>?/`~]{8,}$/;
             if (!passwordRegex.test(password)) {
-                errorMessages.push("Invalid password (Reason:...)");
+                errorMessages.push("Invalid password (Reason: must be at least 8 characters with uppercase, lowercase, number, and special character)");
             }
 
-            // confirm password validation
+            // Confirm password validation
             if (password !== confirmPassword) {
                 errorMessages.push("Passwords do not match");
             }
 
-            const messageBox = document.getElementById('messageBox');
-            const errorDiv = document.getElementById('error-messages');
-            const successDiv = document.getElementById('success-message');
-
+            // Display errors or success
             if (errorMessages.length > 0) {
                 errorDiv.innerHTML = errorMessages.join('<br>');
                 errorDiv.style.display = 'block';
-                successDiv.style.display = 'none';
-                return false;
+            } else {
+                // Show success message
+                successDiv.style.display = 'block';
+                
+                // Redirect after delay
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
             }
-
-            // Show success message
-            errorDiv.style.display = 'none';
-            successDiv.style.display = 'block';
-            
-            // Redirect after delay
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 2000);
-
-            return false;
-        }
+        });
     </script>
 </body>
 </html>
